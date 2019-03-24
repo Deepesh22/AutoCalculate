@@ -20,10 +20,14 @@ for img in images:
         cv2.imshow("", image)
         image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY) #removing rgb channel
         image = cv2.resize(image, (28,28)) #resizing
-        data.append([*list(np.array(image).flatten()), args.label])
+        data.append([args.label,*list(255-np.array(image).flatten())])
         count +=1
         print("{} done".format(count))
 
-df = pd.DataFrame(data)
-filename = "{} dataset.csv".format(args.label)
-df.to_csv(filename)
+col = ["label"]
+for i in range(784):
+    col.append("pixel{}".format(i))
+
+df = pd.DataFrame(data, columns= col)
+filename = "{}dataset.csv".format(args.label)
+df.to_csv(filename,index=False)
