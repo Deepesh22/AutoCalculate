@@ -2,7 +2,7 @@ import cv2
 import numpy as np 
 import keras
 
-model = keras.models.load_model("CNN_Scored_99.357.model") #load Model
+model = keras.models.load_model("CNN_99.model") #load Model
 path = "c0ed783c-f402-417d-9ca3-3ab030dbc71f.jpg" #path to image
 
 #load and convert to gray
