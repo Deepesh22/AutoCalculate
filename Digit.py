@@ -2,19 +2,26 @@ import cv2
 import numpy as np 
 import keras
 
-model = keras.models.load_model("CNN_Scored_99.357.model") #load Model
-path = "0_4JRXMGNuA7FLG2KR.png" #path to image
+model = keras.models.load_model("CNN_99.model") #load Model
+path = "c0ed783c-f402-417d-9ca3-3ab030dbc71f.jpg" #path to image
 
 #load and convert to gray
 img = cv2.imread(path) 
 gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
 
+#removing shadow
+dilated_img = cv2.dilate(gray, np.ones((7,7), np.uint8))
+bg_img = cv2.medianBlur(dilated_img, 21)
+diff_img = 255 - cv2.absdiff(gray, bg_img)
+
 #thresholding
-_, thresh = cv2.threshold(gray, 120, 255, cv2.THRESH_BINARY_INV + cv2.THRESH_OTSU)
+_, thresh = cv2.threshold(diff_img, 120, 255, cv2.THRESH_BINARY_INV + cv2.THRESH_OTSU)
 
 # Add dilation to thicken
 kernel = np.ones((3,3),np.uint8)
 thresh = cv2.dilate(thresh, kernel, iterations = 1)
+
+
 
 _, contours, heir = cv2.findContours(thresh, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE) #contour detection
 
