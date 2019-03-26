@@ -29,5 +29,5 @@ for i in range(784):
     col.append("pixel{}".format(i))
 
 df = pd.DataFrame(data, columns= col)
-filename = "{}dataset.csv".format(args.label)
+filename = "supporting files/{}dataset.csv".format(args.label)
 df.to_csv(filename,index=False)
